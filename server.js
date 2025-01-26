@@ -24,8 +24,15 @@ app.put('/user/skin', (req, res) => {
 })
 
 app.post('/user/register', (req, res) => {
-  UserTable.push(req.body)
-  res.status(201).json(req.body)
+  const userindex = UserTable.find(user => user.id === req.body.id)
+  console.log(UserTable.length)
+  console.log(userindex)
+  if (typeof(userindex) == "undefined"){
+    UserTable.push(req.body)
+    res.status(201).json(req.body)
+  }else {
+    res.send('User is existing')
+  }
 })
 
 app.get('/user/:id', (req, res) => {
