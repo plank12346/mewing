@@ -10,32 +10,28 @@ app.listen(3000, () => {
     console.log('Start server at port 3000.')
   })
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
+app.post('/user/login', (req, res) => {
+  res.send('Log in')
 })
 
-const books = require('./db')
-
-app.get('/books', (req, res) => {
-  res.json(books)
+app.post('/user/forget', (req, res) => {
+  res.send('ForgetPassword')
 })
 
-app.get('/books/:id', (req, res) => {
-  res.json(books.find(book => book.id === req.params.id))
+app.put('/user/skin', (req, res) => {
+  res.send('Skin')
 })
 
-app.post('/books', (req, res) => {
-  books.push(req.body)
-  res.status(201).json(req.body)
+app.post('/user/register', (req, res) => {
+  res.send('Register')
 })
 
-app.put('/books/:id', (req, res) => {
-  const updateIndex = books.findIndex(book => book.id === req.params.id)
-  res.json(Object.assign(books[updateIndex], req.body))
+app.get('/user/:id', (req, res) => {
+  res.send('Profile')
 })
 
-app.delete('/books/:id', (req, res) => {
-  const deletedIndex = books.findIndex(book => book.id === req.params.id)
-  books.splice(deletedIndex, 1)
-  res.status(204).send()
+const UserTable = require('./user')
+
+app.get('/Login', (req, res) => {
+  res.json(Login)
 })
