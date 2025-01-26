@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 
+const UserTable = require('./user')
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
@@ -23,15 +24,15 @@ app.put('/user/skin', (req, res) => {
 })
 
 app.post('/user/register', (req, res) => {
-  res.send('Register')
+  UserTable.push(req.body)
+  res.status(201).json(req.body)
 })
 
 app.get('/user/:id', (req, res) => {
-  res.send('Profile')
+  res.json(UserTable.find(user => user.id === req.params.id))
 })
 
-const UserTable = require('./user')
-
-app.get('/Login', (req, res) => {
-  res.json(Login)
+app.get('/user', (req, res) => {
+  res.json(UserTable)
 })
+
