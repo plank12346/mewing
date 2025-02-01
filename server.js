@@ -66,9 +66,20 @@ app.put('/user', (req, res) => {
   }  
 })
 
-app.post('/user/login', (req, res) => {
+app.post('/user/login', (req, res) => { 
   console.log("Login")
-  res.send('Log in')
+
+  const user = UserTable.find(user => user.email === req.body.email)
+  console.log(UserTable.length)
+  console.log(user)
+
+ if (user === undefined){
+    res.status(404).send('User not found')
+  }else if (user.password === req.body.password) {
+    res.status(200).json(user.id)
+  }  else {
+    res.status(400).send('password is incorrect')
+  }
 })
 
 app.post('/user/forget', (req, res) => {
