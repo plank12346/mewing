@@ -11,17 +11,9 @@ app.listen(3000, () => {
     console.log('Start server at port 3000.')
   })
 
-app.post('/user/login', (req, res) => {
-  res.send('Log in')
-})
-
-app.post('/user/forget', (req, res) => {
-  res.send('ForgetPassword')
-})
-
-app.put('/user/skin', (req, res) => {
-  res.send('Skin')
-})
+  app.get('/user', (req, res) => {
+    res.json(UserTable)
+  })  
 
 app.post('/user/register', (req, res) => {
   const userindex = UserTable.find(user => user.id === req.body.id)
@@ -36,10 +28,22 @@ app.post('/user/register', (req, res) => {
 })
 
 app.get('/user/:id', (req, res) => {
+  console.log("Profile")
   res.json(UserTable.find(user => user.id === req.params.id))
 })
 
-app.get('/user', (req, res) => {
-  res.json(UserTable)
+app.put('/user', (req, res) => {
+  console.log("Skin")
+  const updateIndex = user.findIndex(user => user.id === req.body.id)
+  res.json(Object.assign(UserTable[updateIndex].skin, req.body.skin))
 })
 
+app.post('/user/login', (req, res) => {
+  console.log("Login")
+  res.send('Log in')
+})
+
+app.post('/user/forget', (req, res) => {
+  console.log("Forgetpassword")
+  res.send('ForgetPassword')
+})
