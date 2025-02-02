@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 
-const UserTable = require('./user')
+var UserTable = require('./user')
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
@@ -11,29 +11,52 @@ app.listen(3000, () => {
     console.log('Start server at port 3000.')
   })
 
-app.get('/user', (req, res) => {
-  console.log("All user ")
+app.get('/', (req, res) => {
+  console.log("----------- host -----------")
 
     res.json(UserTable)
 })
-  
+
+app.get('/user', (req, res) => {
+  console.log("----------- All user -----------")
+
+    res.json(UserTable)
+})
+
+app.post('/user-table', (req, res) => {
+  console.log("----------- Update table -----------")
+
+    UserTable = req.body
+    res.json(UserTable)
+})  
 
 app.post('/user/register', (req, res) => {
-  console.log("Register ")
+  console.log("----------- Register -----------")
 
-  const user = UserTable.find(user => user.id === req.body.id)
-  console.log(UserTable.length)
+  const user = UserTable.find(user => user.email === req.body.email)
   console.log(user)
+
   if (user === undefined){
-    UserTable.push(req.body)
-    res.status(200).json(req.body)
+    newUser = {
+      "id": UserTable.length.toString(),
+      "name": req.body.name,
+      "email": req.body.email,
+      "password": req.body.password,
+      "dob": req.body.dob,
+      "skin": req.body.skin
+    }
+
+    console.log(newUser)
+
+    UserTable.push(newUser)
+    res.status(200).json(newUser)
   }else {
     res.status(400).send('User is existing')
   }
 })
 
 app.get('/user/profile/:id', (req, res) => {
-  console.log("Profile " + req.params.id)
+  console.log("----------- Profile " + req.params.id + " -----------")
 
   const user = UserTable.find(user => user.id === req.params.id)
   console.log(UserTable.length)
@@ -48,7 +71,7 @@ app.get('/user/profile/:id', (req, res) => {
 })
 
 app.put('/user', (req, res) => {
-  console.log("Skin")
+  console.log("----------- Skin -----------")
   console.log(req.body)
 
   const updateIndex = UserTable.findIndex(user => user.id === req.body.id)
@@ -67,7 +90,7 @@ app.put('/user', (req, res) => {
 })
 
 app.post('/user/login', (req, res) => { 
-  console.log("Login")
+  console.log("----------- Login -----------")
 
   const user = UserTable.find(user => user.email === req.body.email)
   console.log(UserTable.length)
@@ -83,6 +106,6 @@ app.post('/user/login', (req, res) => {
 })
 
 app.post('/user/forget', (req, res) => {
-  console.log("Forgetpassword")
+  console.log("----------- Forgetpassword -----------")
   res.send('ForgetPassword')
 })
