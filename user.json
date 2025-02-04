@@ -5,6 +5,7 @@
       "email": "example@email.com",
       "password": "example",
       "dob": "2020-10-14",
-      "skin": "1"
+      "skin": "1",
+      "class": "142"
     }
   ]

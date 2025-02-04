@@ -43,7 +43,8 @@ app.post('/user/register', (req, res) => {
       "email": req.body.email,
       "password": req.body.password,
       "dob": req.body.dob,
-      "skin": req.body.skin
+      "skin": req.body.skin,
+      "class": req.body.class
     }
 
     console.log(newUser)
