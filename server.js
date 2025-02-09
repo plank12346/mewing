@@ -203,12 +203,6 @@ app.post('/user/login', (req, res) => {
   }
 })
 
-app.post('/user/forget', (req, res) => {
-  console.log("----------- Forgetpassword -----------")
-  return res.send('ForgetPassword')
-})
-
-
 app.post('/user/step', (req, res) => {
   console.log("----------- Add Step -----------")
 
@@ -286,11 +280,4 @@ app.get('/ranking-calculate/:date', (req, res) => {
   RankingTable.set(req.params.date, result)
 
   return res.status(200).send(result)
-})
-
-app.post('/ranking', (req, res) => {
-  console.log("----------- Calculate Ranking [" + formatDate() + "] -----------")
-
-  // TODO: calculate ranking of each day
-  res.status(200).send('Calculate Ranking [' + formatDate() + ']')
 })
