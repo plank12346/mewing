@@ -259,25 +259,41 @@ app.get('/ranking/:date', (req, res) => {
   return res.status(200).send(RankingTable.get(req.params.date))
 })
 
-app.get('/ranking-calculate/:date', (req, res) => {
-  console.log("----------- Calculate Ranking [" + req.params.date + "] -----------")
+app.get('/ranking-calculate', (req, res) => {
 
-  if (!RankingRawTable.has(req.params.date)) {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const formattedDate = yesterday.toISOString().split('T')[0];
+
+  console.log("----------- Calculate Ranking [" + formattedDate + "] -----------")
+
+  if (!RankingRawTable.has(formattedDate)) {
     return res.status(404).send('No Data')
   } 
 
-  const result = Array.from(RankingRawTable.get(req.params.date))
-    .map(([className, steps]) => {
-      const totalSteps = Array.from(steps.values()).reduce((acc, val) => acc + val, 0);
-      return {
-        className,
-        sum: totalSteps
-      };
-    })
-    .sort((a, b) => b.sum - a.sum);
+  const result = [];
+  const data = RankingRawTable.get(formattedDate); // Get data from the Map
+  
+  if (data) {
+    for (const [className, stepsMap] of data.entries()) {
+      let totalSteps = 0;
+  
+      // Sum all step values
+      for (const stepValue of stepsMap.values()) {
+        totalSteps += stepValue;
+      }
+  
+      result.push({ className, sum: totalSteps });
+    }
+  
+    // Sort the result in descending order by sum
+    result.sort((a, b) => b.sum - a.sum);
+  }
+  
+  console.log(data)
   console.log(result)
 
-  RankingTable.set(req.params.date, result)
+  RankingTable.set(formattedDate, result)
 
   return res.status(200).send(result)
 })
